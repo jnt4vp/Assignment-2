@@ -5,55 +5,59 @@ using namespace std;
   
 struct Node {
     int data;
-    Node*next;
+    Node* next;
 };
 
 class SingleLinkedList{
     private:
-        Node *head, *tail;
+        Node* head;
+        Node* tail;
         int num_items;
     public:
-        void linked_list(){
-            head = NULL;
-            tail = NULL;
+        SingleLinkedList() : head(nullptr), tail(nullptr), num_items(0){
+
         }
 
         void push_front(int n){
+            //creates a new temporary node
             Node *tmp = new Node;
             tmp -> data = n;
             tmp -> next = head;
             head = tmp;
+            num_items ++;
         }
         void push_back(int n){
-            cout << n << "\n";
+            //creates a new temporary node
             Node *tmp = new Node;
             tmp->data = n;
             tmp->next = NULL;
-            cout << tmp->data << "\n";
 
-            if(head == NULL){
-                cout << "NULL\n";
+            if(head == nullptr){
+                //checks to see if list is empty
                 head = tmp;
                 tail = tmp;
             }
             else{
-                cout << "Not Null\n";
+                //if the list isnt empty it pushes the new node to the back
                 tail->next = tmp;
-                cout << "Worked\n";
                 tail = tail->next;
             }
+            num_items++;
         }
 
         void pop_front(){
+            //checks to see if the list is empty
             if (head == NULL){
                 cout << "Empty\n";
             }
             Node* temp = head;
             head = head->next;
             delete temp;
+            num_items --;
         }
 
         void pop_back(){
+            //checks to see if list is empty and prints this to the user
             if(head == NULL){
                 cout << "Empty\n";
             }
@@ -66,15 +70,18 @@ class SingleLinkedList{
             }
             delete(second_last->next);
             second_last->next = NULL;
-
+            num_items --;
         }
         void front(){
+            //prints data value of front
             cout << head->data << "\n";
         }
         void back(){
+            //prints data value of tail
             cout << tail->data << "\n";
         }
         void empty(){
+            //tells user that the list is empty or not empty
             if(head == NULL){
                 cout << "Empty\n";
             }
@@ -85,62 +92,52 @@ class SingleLinkedList{
 
         Node* getNode(int data)
         {
-            // allocating space
             Node* newNode = new Node();
         
-            // inserting the required data
             newNode->data = data;
             newNode->next = NULL;
             return newNode;
         }
         
-        // function to insert a Node at required position
         void insertPos(Node** current, int pos, int data)
         {
-            // This condition to check whether the
-            // position given is valid or not.
             if (pos < 1 || pos > num_items + 1)
                 cout << "Invalid position!" << endl;
             else {
-        
-                // Keep looping until the pos is zero
                 while (pos--) {
         
                     if (pos == 0) {
         
-                        // adding Node at required position
                         Node* temp = getNode(data);
         
-                        // Making the new Node to point to 
-                        // the old Node at the same position
                         temp->next = *current;
         
-                        // Changing the pointer of the Node previous 
-                        // to the old Node to point to the new Node
                         *current = temp;
                     }
                     else
-                    // Assign double pointer variable to point to the 
-                    // pointer pointing to the address of next Node 
                     current = &(*current)->next;
                 }
                 num_items++;
             }
         }
         bool delete_node(int position){
+            //checks to see if the list is empty
             if(head == NULL){
                 return false;
             }
             Node* temp = head;
+            //checks to see if there is only one value in the list
             if(position == 0){
                 head = temp->next;
                 free(temp);
+                num_items --;
                 return true;
             }
             for(int i=0;temp != NULL && i< position - 1; i++){
                 temp = temp->next;
             }
             if(temp == NULL || temp->next == NULL){
+                num_items --;
                 return true;
             }
             Node* next = temp->next->next;
@@ -150,6 +147,7 @@ class SingleLinkedList{
     void find(int item){
         Node* temp = head;
         int index = 0;
+        //iterates through linked list to find the value
         while(temp != NULL){
             index ++;
             if(temp->data == item){
@@ -164,8 +162,9 @@ class SingleLinkedList{
 int main(){
     SingleLinkedList list1;
     list1.push_back(1);
-    // list1.empty();
-    // list1.front();
-    // list1.back();
+    list1.push_front(2);
+    list1.empty();
+    list1.front();
+    list1.back();
     return 0;
 }
